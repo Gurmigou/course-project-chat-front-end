@@ -3,6 +3,8 @@ import MicOffIcon from '@mui/icons-material/MicOff';
 import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import CallEndIcon from '@mui/icons-material/CallEnd';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ChatIcon from '@mui/icons-material/Chat';
+import {Colors} from "../../../../assets/Colors";
 
 const ChatControlButtonsContainer = styled('div')({
     maxWidth: '1400px',
@@ -14,9 +16,12 @@ const ChatControlButtonsContainer = styled('div')({
 const Control = styled(Fab)({
     margin: '0 1rem',
     borderRadius: '50%',
-    background: '#532fda',
+    background: '#495C83',
     width: '4rem',
     height: '4rem',
+    '&:hover': {
+        background: '#6a78b0',
+    },
 });
 
 const CallEnd = styled(Fab)({
@@ -25,32 +30,40 @@ const CallEnd = styled(Fab)({
     width: '4rem',
     height: '4rem',
     background: '#e53e3e',
+    '&:hover': {
+        background: '#e56767',
+    },
 });
 
 const NextPeer = styled(Fab)({
-    margin: '0 1rem',
-    borderRadius: '50%',
-    width: '4rem',
+    margin: '0 2rem',
+    borderRadius: '5px',
+    width: '6rem',
     height: '4rem',
-    background: '#1976d2',
+    background: Colors.color5,
+    '&:hover': {
+        background: Colors.color6,
+    },
 });
 
 export const ChatControlButtons = () => {
     return (
         <ChatControlButtonsContainer>
-            <Control color="primary" aria-label="add">
-                <MicOffIcon/>
+            <Control>
+                <MicOffIcon style={{color: 'white'}} />
             </Control>
-            <Control color="primary" aria-label="add">
-                <VideocamOffIcon/>
+            <Control>
+                <VideocamOffIcon style={{color: 'white'}}/>
             </Control>
-            <CallEnd color="primary" aria-label="add">
-                <CallEndIcon/>
+            <CallEnd>
+                <CallEndIcon style={{color: 'white'}}/>
             </CallEnd>
-            <NextPeer color="primary" aria-label="add">
-                <ArrowForwardIosIcon/>
+            <Control>
+                <ChatIcon style={{color: 'white'}}/>
+            </Control>
+            <NextPeer>
+                <ArrowForwardIosIcon style={{color: 'white'}}/>
             </NextPeer>
-
         </ChatControlButtonsContainer>
     );
 };

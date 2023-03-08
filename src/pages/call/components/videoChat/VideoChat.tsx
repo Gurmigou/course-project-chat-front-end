@@ -1,10 +1,9 @@
 import {styled} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
-import {CallConnectionService} from "../service/CallConnectionService";
-import {WaitingPeerCard} from "./WaitingPeerCard";
-import {ChatTimer} from "./ChatTimer";
-import {CallInfo} from "../../../model/Call";
-import {Block} from "@mui/icons-material";
+import {CallConnectionService} from "../../service/CallConnectionService";
+import {ChatTimer} from "../common/ChatTimer";
+import {CallInfo} from "../../../../model/Call";
+import {VideoInfoCard} from "./VideoInfoCard";
 
 const VideoChatContainer = styled('div')({
     margin: '0 auto',
@@ -20,6 +19,9 @@ const VideoGrid = styled('div')({
         maxWidth: '50rem',
         margin: '0 auto',
         gap: '6rem',
+    },
+    '@media (max-width: 760px)': {
+        margin: '0 1rem',
     }
 })
 
@@ -30,8 +32,7 @@ const VideoPlayer = styled('video')({
     position: 'relative',
 });
 
-const VideoPlayerContainer = styled('div')({
-});
+const VideoPlayerContainer = styled('div')({});
 
 const NicknameText = styled('p')({
     position: 'absolute',
@@ -71,14 +72,18 @@ export const VideoChat = ({userId, roomId}: CallInfo) => {
                     <VideoPlayer ref={videoPlayerUser1}
                                  autoPlay playsInline>
                     </VideoPlayer>
-                    <NicknameText>Gurmigou 🧍‍♂️ 😆 👀 </NicknameText>
+                    <NicknameText>Gurmigou 🧍‍♂️ 😆 😊 </NicknameText>
                 </VideoPlayerContainer>
 
-                <VideoPlayer style={{display: getDisplayOnPeerConnected(peerConnected)}}
-                             ref={videoPlayerUser2}
-                             autoPlay playsInline>
-                </VideoPlayer>
-                <WaitingPeerCard style={{display: getDisplayOnPeerConnected(!peerConnected, 'flex')}}></WaitingPeerCard>
+                <VideoPlayerContainer>
+                    <VideoPlayer style={{display: getDisplayOnPeerConnected(peerConnected)}}
+                                 ref={videoPlayerUser2}
+                                 autoPlay playsInline>
+                    </VideoPlayer>
+                    <VideoInfoCard message={'Your peer turned off camera ⛔📷'} circularProgress={false}
+                                   style={{display: getDisplayOnPeerConnected(!peerConnected, 'flex')}}></VideoInfoCard>
+                    <NicknameText>Your peer 👀 </NicknameText>
+                </VideoPlayerContainer>
             </VideoGrid>
         </VideoChatContainer>
     );
