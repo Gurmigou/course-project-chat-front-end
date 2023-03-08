@@ -1,29 +1,10 @@
-import {LinearProgress, styled} from "@mui/material";
-import {CSSProperties, useEffect, useState} from "react";
+import {LinearProgress} from "@mui/material";
+import {useEffect, useState} from "react";
+import {ChatTimerContainer, linearProgressStyle, TimerTitle} from "../../../../style/call/common/ChatTimerStyle";
 
 type ChatTimerProps = {
     startTimer: boolean;
 }
-
-const ChatTimerContainer = styled('div')({
-    marginTop: "0.5rem",
-    marginBottom: "2.5rem"
-});
-
-const linearProgressStyle: CSSProperties = {
-    marginBottom: "20px",
-    height: "0.5rem",
-    borderRadius: "5px",
-    background: 'white',
-}
-
-const TimerTitle = styled('p')({
-    color: 'white',
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
-    fontSize: '1.5rem'
-});
-
 
 export const ChatTimer = ({startTimer}: ChatTimerProps) => {
     const [progress, setProgress] = useState(100);

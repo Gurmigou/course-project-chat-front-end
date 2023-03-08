@@ -4,16 +4,16 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
-import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, styled} from "@mui/material";
+import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {Colors} from "../../assets/Colors";
+import {SignUpContainer, SignUpTextField} from '../../style/signUp/SignUpStyle';
+import {NavLink} from "react-router-dom";
 
 const Copyright = (props: any) => {
     return (
@@ -27,22 +27,6 @@ const Copyright = (props: any) => {
         </Typography>
     );
 }
-
-const SignUpContainer = styled("div")({});
-
-const SignUpTextField = styled(TextField)({
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            color: Colors.color4,
-        },
-        '&:hover fieldset': {
-            borderColor: Colors.color4,
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: Colors.color4,
-        },
-    },
-});
 
 export const SignUp = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -73,14 +57,14 @@ export const SignUp = () => {
     ]
 
     const [myGender, setMyGender] = React.useState<string>('');
-    const [gender, setGender] = React.useState<string>('');
+    const [wantChatGender, setWantChatGender] = React.useState<string>('');
 
     const handeMyGenderChange = (event: SelectChangeEvent) => {
         setMyGender(event.target.value);
     }
 
-    const handleGenderChange = (event: SelectChangeEvent) => {
-        setGender(event.target.value);
+    const handleWantChatGenderChange = (event: SelectChangeEvent) => {
+        setWantChatGender(event.target.value);
     };
 
     return (
@@ -96,7 +80,9 @@ export const SignUp = () => {
                     }}
                 >
                     <Avatar sx={{m: 1, bgcolor: Colors.color3}}>
-                        <VideoChatIcon/>
+                        <NavLink to={'/'} style={{color: 'white'}}>
+                            <VideoChatIcon/>
+                        </NavLink>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
@@ -110,12 +96,12 @@ export const SignUp = () => {
                                          label="Password" type="password" id="password"
                                          InputLabelProps={{style: {color: Colors.color3}}}
                         />
-                        <FormControl sx={{ width: '100%', marginTop: '30px' }} required>
+                        <FormControl sx={{width: '100%', marginTop: '30px'}} required>
                             <InputLabel id="demo-select-small">Select gender</InputLabel>
                             <Select
                                 labelId="demo-select-small"
                                 id="demo-select-small"
-                                value={gender}
+                                value={myGender}
                                 label="Select gender"
                                 onChange={handeMyGenderChange}
                                 style={{textAlign: 'left'}}
@@ -125,14 +111,14 @@ export const SignUp = () => {
                                 <MenuItem value={3}>I don't want to tell</MenuItem>
                             </Select>
                         </FormControl>
-                        <FormControl sx={{ width: '100%', marginTop: '10px' }}>
+                        <FormControl sx={{width: '100%', marginTop: '10px'}}>
                             <InputLabel id="demo-select-small">With whom you want to chat</InputLabel>
                             <Select
                                 labelId="demo-select-small"
                                 id="demo-select-small"
-                                value={gender}
+                                value={wantChatGender}
                                 label="With whom you want to chat?"
-                                onChange={handleGenderChange}
+                                onChange={handleWantChatGenderChange}
                                 style={{textAlign: 'left'}}
                             >
                                 <MenuItem value={1}>Male</MenuItem>
@@ -140,19 +126,19 @@ export const SignUp = () => {
                                 <MenuItem value={3}>No matter</MenuItem>
                             </Select>
                         </FormControl>
-                        <Autocomplete style={{ margin: '10px 0' }}
-                            multiple
-                            id="tags-standard"
-                            options={interests}
-                            getOptionLabel={(option) => option.title}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Select your interests"
-                                    placeholder="Favorites"
-                                />
-                            )}
+                        <Autocomplete style={{margin: '10px 0'}}
+                                      multiple
+                                      id="tags-standard"
+                                      options={interests}
+                                      getOptionLabel={(option) => option.title}
+                                      renderInput={(params) => (
+                                          <TextField
+                                              {...params}
+                                              variant="standard"
+                                              label="Select your interests"
+                                              placeholder="Favorites"
+                                          />
+                                      )}
                         />
                         <Button
                             type="submit"
@@ -174,9 +160,9 @@ export const SignUp = () => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2" style={{color: Colors.color1, textDecoration: 'none'}}>
+                                <NavLink to={'/sign-in'} style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
                                     {"Already have an account? Sign in"}
-                                </Link>
+                                </NavLink>
                             </Grid>
                         </Grid>
                     </Box>

@@ -1,46 +1,9 @@
-import {styled} from "@mui/material";
 import {useEffect, useRef, useState} from "react";
 import {CallConnectionService} from "../../service/CallConnectionService";
 import {ChatTimer} from "../common/ChatTimer";
 import {CallInfo} from "../../../../model/Call";
 import {VideoInfoCard} from "./VideoInfoCard";
-
-const VideoChatContainer = styled('div')({
-    margin: '0 auto',
-    maxWidth: '1400px'
-});
-
-const VideoGrid = styled('div')({
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    gap: '2rem',
-    '@media (max-width: 1420px)': {
-        gridTemplateColumns: '1fr',
-        maxWidth: '50rem',
-        margin: '0 auto',
-        gap: '6rem',
-    },
-    '@media (max-width: 760px)': {
-        margin: '0 1rem',
-    }
-})
-
-const VideoPlayer = styled('video')({
-    width: '100%',
-    borderRadius: '5px',
-    boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-    position: 'relative',
-});
-
-const VideoPlayerContainer = styled('div')({});
-
-const NicknameText = styled('p')({
-    position: 'absolute',
-    width: '640px',
-    color: 'white',
-    fontSize: '1.5rem',
-    marginTop: '1.5rem',
-});
+import {NicknameText, VideoChatContainer, VideoGrid, VideoPlayer, VideoPlayerContainer } from "../../../../style/call/videoChat/VideoChatStyle";
 
 export const VideoChat = ({userId, roomId}: CallInfo) => {
     const [peerConnected, setPeerConnected] = useState<boolean>(false);

@@ -3,7 +3,6 @@ import {FormEvent} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
@@ -12,8 +11,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
-import {styled} from "@mui/material";
 import {Colors} from "../../assets/Colors";
+import {SignInContainer, SignInFooter, SignInTextField} from '../../style/signIn/SignInStyle';
+import {NavLink} from "react-router-dom";
 
 const Copyright = (props: any) => {
     return (
@@ -27,22 +27,6 @@ const Copyright = (props: any) => {
         </Typography>
     );
 }
-
-const SignInContainer = styled("div")({});
-
-const SignInTextField = styled(TextField)({
-    '& .MuiOutlinedInput-root': {
-        '& fieldset': {
-            color: Colors.color4,
-        },
-        '&:hover fieldset': {
-            borderColor: Colors.color4,
-        },
-        '&.Mui-focused fieldset': {
-            borderColor: Colors.color4,
-        },
-    },
-});
 
 export const SignIn = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -67,7 +51,9 @@ export const SignIn = () => {
                     }}
                 >
                     <Avatar sx={{m: 1, bgcolor: Colors.color3}}>
-                        <VideoChatIcon/>
+                        <NavLink to={'/'} style={{color: 'white'}}>
+                            <VideoChatIcon/>
+                        </NavLink>
                     </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -102,22 +88,18 @@ export const SignIn = () => {
                                 '&:active': {
                                     bgcolor: Colors.color2,
                                 },
-                        }}
+                            }}
                         >
                             Sign In
                         </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="#" variant="body2" style={{color: Colors.color1, textDecoration: 'none'}}>
-                                    Forgot password?
-                                </Link>
-                            </Grid>
-                            <Grid item xs>
-                                <Link href="#" variant="body2" style={{color: Colors.color1, textDecoration: 'none'}}>
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        <SignInFooter>
+                            <Link href="#" variant="body2" style={{color: Colors.color1, textDecoration: 'none'}}>
+                                Forgot password?
+                            </Link>
+                            <NavLink to={'/sign-up'} style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
+                                {"Don't have an account? Sign Up"}
+                            </NavLink>
+                        </SignInFooter>
                     </Box>
                 </Box>
                 <Copyright sx={{mt: 8, mb: 4}}/>
