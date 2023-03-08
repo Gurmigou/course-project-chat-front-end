@@ -1,10 +1,9 @@
 import React from 'react';
 import {styled} from "@mui/material";
 import Button from "@mui/material/Button";
-import VideoCameraBackIcon from '@mui/icons-material/VideoCameraBack';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import {Colors} from "../../assets/Colors";
+import {NavLink} from "react-router-dom";
+import {NavHeader} from "../../components/NavHeader";
 
 const MainContainer = styled("div")({
     height: '100vh',
@@ -12,48 +11,9 @@ const MainContainer = styled("div")({
 })
 
 const MainContent = styled("div")({
-    maxWidth: '90%',
+    maxWidth: '100%',
     margin: '0 auto',
 });
-
-const TopLeftLogo = styled("div")({
-    marginTop: '1rem',
-    marginLeft: '1rem',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '1.5rem',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    padding: '0.5rem 1rem',
-    borderRadius: '10px',
-});
-
-const TopRightLogo = styled("div")({
-    marginTop: '1rem',
-    marginRight: '1.5rem',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '2rem',
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    padding: '0.5rem',
-    borderRadius: '10px',
-});
-
-const Header = styled("div")({
-    height: '100px',
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-})
-
-const LogoContainer = styled("div")({
-    padding: '1rem',
-    background: Colors.color5,
-    borderRadius: '20px',
-    boxShadow: '0 0 10px 0 rgba(0,0,0,0.5)'
-})
 
 const JoinChatButton = styled(Button)({
     fontSize: '2rem',
@@ -71,20 +31,9 @@ export const MainPage = () => {
     return (
         <MainContainer>
             <MainContent>
-                <Header>
-                    <TopLeftLogo>
-                        <LogoContainer>
-                            <VideoCameraBackIcon style={{fontSize: 35, color: 'white'}}></VideoCameraBackIcon>
-                        </LogoContainer>
-                        <p style={{color: 'white'}}>Quick chat</p>
-                    </TopLeftLogo>
-                    <TopRightLogo>
-                        <ListAltIcon style={{fontSize: 35, color: 'white'}}></ListAltIcon>
-                        <AccountCircleIcon style={{fontSize: 35, color: 'white'}}></AccountCircleIcon>
-                    </TopRightLogo>
-                </Header>
+                <NavHeader/>
                 <JoinChatButton variant="contained">
-                    Join chat
+                    <NavLink to={'/room'} style={{textDecoration: 'none', color: 'white'}}>Join chat</NavLink>
                 </JoinChatButton>
             </MainContent>
         </MainContainer>
