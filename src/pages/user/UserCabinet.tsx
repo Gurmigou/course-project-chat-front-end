@@ -13,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
 import {interests} from "../../model/user/CommonUser";
+import {SignUpAutocomplete} from "../../style/signUp/SignUpStyle";
 
 export const UserCabinet = () => {
     const [myGender, setMyGender] = React.useState<string>('');
@@ -68,8 +69,9 @@ export const UserCabinet = () => {
                         </Select>
                     </UserFormControl>
                     <UserFormControl sx={{width: '100%', marginTop: '30px'}} required>
-                        <InputLabel id="demo-select-small" sx={{color: Colors.color7}}>With whom you want to
-                            chat</InputLabel>
+                        <InputLabel id="demo-select-small" sx={{color: Colors.color7}}>
+                            With whom you want to chat
+                        </InputLabel>
                         <Select
                             labelId="demo-select-small"
                             id="demo-select-small"
@@ -99,7 +101,6 @@ export const UserCabinet = () => {
                                               label="Select your interests"
                                               placeholder="Favorites"
                                               InputLabelProps={{style: {color: Colors.color7, fontSize: '18px'}}}
-                                              InputProps={{style: {color: Colors.color7}}}
                                           />
                                       )}
                     />
