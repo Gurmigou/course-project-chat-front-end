@@ -4,6 +4,7 @@ import {WaitingPeerContainer, WaitingPeerText} from "../../../../style/call/vide
 
 export type VideoInfoMessages =
     "Waiting for peer to join" |
+    "Problem with your connection" |
     "You turned off your camera ⛔📷" |
     "Your peer turned off camera ⛔📷";
 

@@ -12,4 +12,6 @@ export type PeerOffer = {
 export type CallInfo = {
     userId: number,
     roomId: number,
+    cameraOn: boolean,
+    peerCameraOn: boolean,
 }

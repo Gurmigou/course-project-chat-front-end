@@ -35,6 +35,7 @@ export const TextChat = ({open}: TextChatParams) => {
                 <ChatInput>
                     <ChatTextField InputLabelProps={{shrink: false}}
                                    InputProps={{style: {color: 'white', fontSize: '18px'}}}
+                                   placeholder={'Type a message...'}
                                    value={message}
                                    onChange={(e) => setMessage(e.target.value)}
                     />

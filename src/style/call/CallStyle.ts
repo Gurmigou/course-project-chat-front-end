@@ -9,6 +9,9 @@ export const CallContainer = styled('div')({
         height: 'auto',
     },
     overflow: 'hidden',
+    '@media (max-width: 860px)': {
+        flexDirection: 'column',
+    },
 });
 
 export const ChatContainer = styled('div')({
@@ -18,4 +21,7 @@ export const ChatContainer = styled('div')({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
+    '@media (max-width: 860px)': {
+        width: 'auto',
+    },
 })

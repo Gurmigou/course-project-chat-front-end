@@ -3,8 +3,8 @@ import {Colors} from "../../../assets/Colors";
 
 export const WaitingPeerContainer = styled('div')({
     display: 'flex',
-    width: '100%',
-    height: '100%',
+    width: '640px',
+    height: '480px',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

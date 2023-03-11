@@ -12,8 +12,9 @@ import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
 import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {Colors} from "../../assets/Colors";
-import {SignUpContainer, SignUpTextField} from '../../style/signUp/SignUpStyle';
+import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField} from '../../style/signUp/SignUpStyle';
 import {NavLink} from "react-router-dom";
+import {interests} from "../../model/user/CommonUser";
 
 const Copyright = (props: any) => {
     return (
@@ -38,23 +39,7 @@ export const SignUp = () => {
         });
     };
 
-    const interests = [
-        {title: 'Sport', id: 1},
-        {title: 'Music', id: 2},
-        {title: 'Games', id: 3},
-        {title: 'Movies', id: 4},
-        {title: 'Books', id: 5},
-        {title: 'Art', id: 6},
-        {title: 'Food', id: 7},
-        {title: 'Travel', id: 8},
-        {title: 'Fashion', id: 9},
-        {title: 'Science', id: 10},
-        {title: 'Technology', id: 11},
-        {title: 'Nature', id: 12},
-        {title: 'Animals', id: 13},
-        {title: 'History', id: 14},
-        {title: 'Politics', id: 15},
-    ]
+
 
     const [myGender, setMyGender] = React.useState<string>('');
     const [wantChatGender, setWantChatGender] = React.useState<string>('');
@@ -96,7 +81,7 @@ export const SignUp = () => {
                                          label="Password" type="password" id="password"
                                          InputLabelProps={{style: {color: Colors.color3}}}
                         />
-                        <FormControl sx={{width: '100%', marginTop: '30px'}} required>
+                        <SignUpFormControl sx={{width: '100%', marginTop: '30px'}} required>
                             <InputLabel id="demo-select-small">Select gender</InputLabel>
                             <Select
                                 labelId="demo-select-small"
@@ -110,8 +95,8 @@ export const SignUp = () => {
                                 <MenuItem value={2}>Female</MenuItem>
                                 <MenuItem value={3}>I don't want to tell</MenuItem>
                             </Select>
-                        </FormControl>
-                        <FormControl sx={{width: '100%', marginTop: '10px'}}>
+                        </SignUpFormControl>
+                        <SignUpFormControl sx={{width: '100%', marginTop: '30px'}} required>
                             <InputLabel id="demo-select-small">With whom you want to chat</InputLabel>
                             <Select
                                 labelId="demo-select-small"
@@ -125,12 +110,12 @@ export const SignUp = () => {
                                 <MenuItem value={2}>Female</MenuItem>
                                 <MenuItem value={3}>No matter</MenuItem>
                             </Select>
-                        </FormControl>
-                        <Autocomplete style={{margin: '10px 0'}}
+                        </SignUpFormControl>
+                        <SignUpAutocomplete style={{margin: '10px 0'}}
                                       multiple
                                       id="tags-standard"
                                       options={interests}
-                                      getOptionLabel={(option) => option.title}
+                                      getOptionLabel={(option: any) => option.title}
                                       renderInput={(params) => (
                                           <TextField
                                               {...params}
