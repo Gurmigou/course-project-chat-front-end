@@ -10,11 +10,12 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
-import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {Colors} from "../../assets/Colors";
 import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField} from '../../style/signUp/SignUpStyle';
-import {NavLink} from "react-router-dom";
-import {interests} from "../../model/user/CommonUser";
+import {NavLink, useNavigate} from "react-router-dom";
+import {Interest, interests} from "../../model/user/CommonUser";
+import axios from "axios";
 
 const Copyright = (props: any) => {
     return (
@@ -30,19 +31,37 @@ const Copyright = (props: any) => {
 }
 
 export const SignUp = () => {
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
-    };
-
-
+    const navigate = useNavigate();
 
     const [myGender, setMyGender] = React.useState<string>('');
     const [wantChatGender, setWantChatGender] = React.useState<string>('');
+    const [selectedInterests, setSelectedInterests] = React.useState<string[]>([]);
+
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+
+        const register: Register = {
+            username: data.get('username') as string,
+            password: data.get('password') as string,
+            myGender: myGender,
+            genderPreference: wantChatGender,
+            interests: selectedInterests,
+        };
+
+        console.log("register", register)
+
+        try {
+            const response = await axios.post('http://localhost:8082/api/v1/security/register', register);
+            if (response.status >= 200 && response.status < 300) {
+                navigate('/sign-in');
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+        }
+    };
+
 
     const handeMyGenderChange = (event: SelectChangeEvent) => {
         setMyGender(event.target.value);
@@ -51,6 +70,11 @@ export const SignUp = () => {
     const handleWantChatGenderChange = (event: SelectChangeEvent) => {
         setWantChatGender(event.target.value);
     };
+
+    const handleInterestsChange = (event: any, value: any) => {
+        setSelectedInterests(value.map((interest: any) => interest.title));
+    };
+
 
     return (
         <SignUpContainer>
@@ -73,8 +97,8 @@ export const SignUp = () => {
                         Sign up
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
-                        <SignUpTextField margin="normal" required fullWidth id="email"
-                                         label="Nickname" name="nickname" autoComplete="nickname" autoFocus
+                        <SignUpTextField margin="normal" required fullWidth id="username"
+                                         label="Username" name="username" autoComplete="username" autoFocus
                                          InputLabelProps={{style: {color: Colors.color3}}}
                         />
                         <SignUpTextField margin="normal" required fullWidth name="password"
@@ -112,18 +136,19 @@ export const SignUp = () => {
                             </Select>
                         </SignUpFormControl>
                         <SignUpAutocomplete style={{margin: '10px 0'}}
-                                      multiple
-                                      id="tags-standard"
-                                      options={interests}
-                                      getOptionLabel={(option: any) => option.title}
-                                      renderInput={(params) => (
-                                          <TextField
-                                              {...params}
-                                              variant="standard"
-                                              label="Select your interests"
-                                              placeholder="Favorites"
-                                          />
-                                      )}
+                                            multiple
+                                            onChange={handleInterestsChange}
+                                            id="tags-standard"
+                                            options={interests}
+                                            getOptionLabel={(option: any) => option.title}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    variant="standard"
+                                                    label="Select your interests"
+                                                    placeholder="Favorites"
+                                                />
+                                            )}
                         />
                         <Button
                             type="submit"
@@ -145,7 +170,8 @@ export const SignUp = () => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <NavLink to={'/sign-in'} style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
+                                <NavLink to={'/sign-in'}
+                                         style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
                                     {"Already have an account? Sign in"}
                                 </NavLink>
                             </Grid>

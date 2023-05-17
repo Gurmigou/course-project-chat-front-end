@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -59,8 +58,8 @@ export const SignIn = () => {
                         Sign in
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
-                        <SignInTextField margin="normal" required fullWidth id="email"
-                                         label="Email Address" name="email" autoComplete="email" autoFocus
+                        <SignInTextField margin="normal" required fullWidth id="username"
+                                         label="Username" name="username" autoFocus
                                          InputLabelProps={{style: {color: Colors.color3}}}
                         />
                         <SignInTextField margin="normal" required fullWidth name="password"
@@ -96,7 +95,8 @@ export const SignIn = () => {
                             <Link href="#" variant="body2" style={{color: Colors.color1, textDecoration: 'none'}}>
                                 Forgot password?
                             </Link>
-                            <NavLink to={'/sign-up'} style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
+                            <NavLink to={'/sign-up'}
+                                     style={{color: Colors.color1, fontSize: '14px', textDecoration: 'none'}}>
                                 {"Don't have an account? Sign Up"}
                             </NavLink>
                         </SignInFooter>

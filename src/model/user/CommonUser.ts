@@ -1,4 +1,4 @@
-export const interests = [
+export const interests: Interest[] = [
     {title: 'Sport', id: 1},
     {title: 'Music', id: 2},
     {title: 'Games', id: 3},
@@ -15,3 +15,8 @@ export const interests = [
     {title: 'History', id: 14},
     {title: 'Politics', id: 15},
 ]
+
+export type Interest = {
+    title: string,
+    id: number,
+}
