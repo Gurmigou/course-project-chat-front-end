@@ -6,7 +6,7 @@ import {VideoInfoCard} from "./VideoInfoCard";
 import {NicknameText, VideoChatContainer, VideoGrid, VideoPlayer, VideoPlayerContainer} from "../../../../style/call/videoChat/VideoChatStyle";
 import {SignalingContext} from "../../service/SignalingContext";
 
-export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn}: CallInfo) => {
+export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn, setConnectionService, setPeerCameraOff}: CallInfo) => {
     const [peerConnected, setPeerConnected] = useState<boolean>(false);
 
     const videoPlayerUser1 = useRef<HTMLVideoElement>(null);
@@ -21,8 +21,9 @@ export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraO
             const callConnection = new CallConnectionService(
                 videoPlayerUser1.current,
                 videoPlayerUser2.current);
-            callConnection.initializeConnection(username, roomId, setPeerConnected, signalingClient)
+            callConnection.initializeConnection(username, roomId, signalingClient, setPeerConnected, setPeerCameraOff)
                 .then(() => console.log('Connection initialized'));
+            setConnectionService(callConnection)
         }
     }, [username, signalingClient]);
 

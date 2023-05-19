@@ -1,3 +1,6 @@
+import {CallConnectionService} from "../pages/call/service/CallConnectionService";
+import {Dispatch, SetStateAction} from "react";
+
 export type DataCommunication = {
     from: number | null,
     to: number | null,
@@ -10,11 +13,13 @@ export type PeerOffer = {
 }
 
 export type CallInfo = {
-    username: string,
-    peerUsername: string,
-    roomId: number,
-    cameraOn: boolean,
-    peerCameraOn: boolean,
+    username: string;
+    peerUsername: string;
+    roomId: number;
+    cameraOn: boolean;
+    peerCameraOn: boolean;
+    setConnectionService: Dispatch<SetStateAction<CallConnectionService | undefined>>;
+    setPeerCameraOff: Dispatch<SetStateAction<boolean>>;
 }
 
 export type ChatRoom = {

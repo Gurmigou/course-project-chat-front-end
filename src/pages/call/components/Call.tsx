@@ -6,6 +6,7 @@ import {CallContainer, ChatContainer} from "../../../style/call/CallStyle";
 import {useLocation, useNavigate} from "react-router-dom";
 import {SignalingClient} from "../service/SignalingClient";
 import { SignalingContext } from "../service/SignalingContext";
+import {CallConnectionService} from "../service/CallConnectionService";
 
 export const Call = () => {
     const location = useLocation();
@@ -15,6 +16,7 @@ export const Call = () => {
     const roomId = location.state.chatRoom.chatId;
 
     const [signalingClient, setSignalingClient] = useState<SignalingClient>();
+    const [connectionService, setConnectionService] = useState<CallConnectionService>();
 
     useEffect(() => {
         const client = new SignalingClient(roomId, username);
@@ -24,11 +26,22 @@ export const Call = () => {
     const [chatOpen, setChatOpen] = useState(true);
     const [micOff, setMicOff] = useState(false);
     const [videoOff, setVideoOff] = useState(false);
+    const [peerCameraOff, setPeerCameraOff] = useState(false);
+
     const navigate = useNavigate();
 
     const handleChatOpen = () => setChatOpen(!chatOpen);
-    const handleMicOff = () => setMicOff(!micOff);
-    const handleVideoOff = () => setVideoOff(!videoOff);
+
+    const handleMicroToggle = () => {
+        setMicOff(!micOff);
+        connectionService?.handleMicroToggle(roomId, username);
+    }
+
+    const handleVideoToggle = () => {
+        setVideoOff(!videoOff);
+        connectionService?.handleCameraToggle(roomId, username)
+    }
+
     const handleCallEnd = () => {
         navigate('/')
     };
@@ -43,11 +56,14 @@ export const Call = () => {
             <CallContainer>
                 <ChatContainer>
                     <VideoChat username={username} peerUsername={peerUsername} roomId={roomId}
-                               cameraOn={!videoOff} peerCameraOn={true}/>
+                               cameraOn={!videoOff} peerCameraOn={!peerCameraOff}
+                               setConnectionService={setConnectionService}
+                               setPeerCameraOff={setPeerCameraOff}
+                    />
                     <ChatControlButtons micOff={micOff}
                                         videoOff={videoOff}
-                                        handleMicOff={handleMicOff}
-                                        handleVideoOff={handleVideoOff}
+                                        handleMicroToggle={handleMicroToggle}
+                                        handleVideoToggle={handleVideoToggle}
                                         handleChatOpen={handleChatOpen}
                                         handleCallEnd={handleCallEnd}
                                         handleNextPeer={handleNextPeer}

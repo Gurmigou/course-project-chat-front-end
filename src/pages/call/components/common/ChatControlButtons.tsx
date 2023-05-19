@@ -10,21 +10,21 @@ import {CallEnd, ChatControlButtonsContainer, Control, NextPeer} from "../../../
 type ChatControlButtonsProps = {
     micOff: boolean;
     videoOff: boolean;
-    handleMicOff: () => void;
-    handleVideoOff: () => void;
+    handleMicroToggle: () => void;
+    handleVideoToggle: () => void;
     handleCallEnd: () => void;
     handleChatOpen: () => void;
     handleNextPeer: () => void;
 }
 
-export const ChatControlButtons = ({micOff, videoOff, handleMicOff, handleVideoOff, handleChatOpen, handleCallEnd, handleNextPeer}: ChatControlButtonsProps) => {
+export const ChatControlButtons = ({micOff, videoOff, handleMicroToggle, handleVideoToggle, handleChatOpen, handleCallEnd, handleNextPeer}: ChatControlButtonsProps) => {
     return (
         <ChatControlButtonsContainer>
-            <Control onClick={handleMicOff}>
+            <Control onClick={handleMicroToggle}>
                 {micOff ? <MicOffIcon style={{color: 'white'}}/> :
                     <MicIcon style={{color: 'white'}}/>}
             </Control>
-            <Control onClick={handleVideoOff}>
+            <Control onClick={handleVideoToggle}>
                 {videoOff ? <VideocamOffIcon style={{color: 'white'}}/> :
                     <VideocamIcon style={{color: 'white'}}/>}
             </Control>

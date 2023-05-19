@@ -10,6 +10,7 @@ export class CallConnectionService {
     private peerVideo: HTMLVideoElement;
     private client: SignalingClient | undefined;
     private setPeerConnected: Dispatch<SetStateAction<boolean>> | undefined;
+    private setPeerCameraOff: Dispatch<SetStateAction<boolean>> | undefined;
 
     private readonly servers = {
         iceServers: [
@@ -31,17 +32,19 @@ export class CallConnectionService {
     }
 
     public async initializeConnection(username: string, roomId: number,
+                                      signalingClient: SignalingClient,
                                       setPeerConnected: Dispatch<SetStateAction<boolean>>,
-                                      signalingClient: SignalingClient) {
+                                      setPeerCameraOff: Dispatch<SetStateAction<boolean>>) {
         this.setPeerConnected = setPeerConnected;
-        // this.client = new SignalingClient(roomId, username);
+        this.setPeerCameraOff = setPeerCameraOff;
+
         this.client = signalingClient;
         const connection = await this.client.connectToRoom();
 
         connection.on("joined_room", this.handleUserJoined)
         connection.on("msg_to_peer", this.handleMessageFromPeer)
         connection.on("left_room", this.handlePeerLeft)
-        // connection.on("chat_to_peer", handleChatToPeer)
+        connection.on("camera_toggle", this.handlePeerCameraToggle)
 
         // ask for video and audio permission
         this.localStream = await navigator.mediaDevices.getUserMedia(this.videoConstraints)
@@ -52,6 +55,22 @@ export class CallConnectionService {
 
     private handleBeforeUnload = (): void => {
         this.client?.disconnectFromRoom();
+    }
+
+    public handleCameraToggle = (roomId: number, username: string): void => {
+        let videoTrack = this.localStream?.getTracks().find(track => track.kind === 'video');
+        if (videoTrack) {
+            videoTrack.enabled = !videoTrack.enabled;
+            this.client?.getConnection()?.emit("camera_toggle", username, roomId, String(videoTrack.enabled));
+        }
+    }
+
+    public handleMicroToggle = (roomId: number, username: string): void => {
+        let audioTrack = this.localStream?.getTracks().find(track => track.kind === 'audio');
+        if (audioTrack) {
+            audioTrack.enabled = !audioTrack.enabled;
+            this.client?.getConnection()?.emit("micro_toggle", username, roomId, String(audioTrack.enabled));
+        }
     }
 
     private handleUserJoined = async (peerId: number) => {
@@ -71,6 +90,11 @@ export class CallConnectionService {
 
     private handlePeerLeft = (peerId: number) => {
         this.setPeerConnected!(false);
+    }
+
+    private handlePeerCameraToggle = (state: string) => {
+        const stateBool = state === "true";
+        this.setPeerCameraOff!(!stateBool);
     }
 
     private async createOffer() {
