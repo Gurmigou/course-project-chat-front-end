@@ -1,13 +1,25 @@
 import {VideoChat} from "./videoChat/VideoChat";
 import {ChatControlButtons} from "./common/ChatControlButtons";
 import {TextChat} from "./textChat/TextChat";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {CallContainer, ChatContainer} from "../../../style/call/CallStyle";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {SignalingClient} from "../service/SignalingClient";
+import { SignalingContext } from "../service/SignalingContext";
 
 export const Call = () => {
-    const userId = Math.floor(Math.random() * 10000);
-    const roomId = 1;
+    const location = useLocation();
+
+    const username = location.state.chatRoom.yourUsername;
+    const peerUsername = location.state.chatRoom.peerUsername;
+    const roomId = location.state.chatRoom.chatId;
+
+    const [signalingClient, setSignalingClient] = useState<SignalingClient | undefined>(undefined);
+
+    useEffect(() => {
+        const client = new SignalingClient(roomId, username);
+        setSignalingClient(client);
+    }, [roomId, username]);
 
     const [chatOpen, setChatOpen] = useState(true);
     const [micOff, setMicOff] = useState(false);
@@ -20,24 +32,31 @@ export const Call = () => {
     const handleCallEnd = () => {
         navigate('/')
     };
-    const handleNextPeer = () => console.log('Next peer');
+
+    const handleNextPeer = () => {
+        // TODO add end of chat request
+        navigate('/waiting-room');
+    }
 
     return (
-        <CallContainer>
-            <ChatContainer>
-                <VideoChat userId={userId} roomId={roomId}
-                           cameraOn={!videoOff} peerCameraOn={true}
-                />
-                <ChatControlButtons micOff={micOff}
-                                    videoOff={videoOff}
-                                    handleMicOff={handleMicOff}
-                                    handleVideoOff={handleVideoOff}
-                                    handleChatOpen={handleChatOpen}
-                                    handleCallEnd={handleCallEnd}
-                                    handleNextPeer={handleNextPeer}
-                />
-            </ChatContainer>
-            <TextChat open={chatOpen}></TextChat>
-        </CallContainer>
+        <SignalingContext.Provider value={signalingClient}>
+            <CallContainer>
+                <ChatContainer>
+                    <VideoChat username={username} peerUsername={peerUsername} roomId={roomId}
+                               cameraOn={!videoOff} peerCameraOn={true}
+                               handleChatToPeer={(s: string) => {
+                               }}/>
+                    <ChatControlButtons micOff={micOff}
+                                        videoOff={videoOff}
+                                        handleMicOff={handleMicOff}
+                                        handleVideoOff={handleVideoOff}
+                                        handleChatOpen={handleChatOpen}
+                                        handleCallEnd={handleCallEnd}
+                                        handleNextPeer={handleNextPeer}
+                    />
+                </ChatContainer>
+                <TextChat open={chatOpen} roomId={roomId} peerUsername={peerUsername}></TextChat>
+            </CallContainer>
+        </SignalingContext.Provider>
     );
 }

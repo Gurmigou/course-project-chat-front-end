@@ -12,7 +12,8 @@ import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
 import {Colors} from "../../assets/Colors";
 import {SignInContainer, SignInFooter, SignInTextField} from '../../style/signIn/SignInStyle';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const Copyright = (props: any) => {
     return (
@@ -28,13 +29,24 @@ const Copyright = (props: any) => {
 }
 
 export const SignIn = () => {
+    const navigate = useNavigate();
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+        const login: Login = {
+            username: data.get('username') as string,
+            password: data.get('password') as string,
+        };
+
+        axios.post('http://localhost:8085/api/v1/security/login', login)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    localStorage.setItem('token', response.data.token);
+                    navigate('/');
+                }
+            })
     };
 
     return (
@@ -66,13 +78,6 @@ export const SignIn = () => {
                                          label="Password" type="password" id="password"
                                          InputLabelProps={{style: {color: Colors.color3}}}
                         />
-                        <FormControlLabel label="Remember me"
-                                          control={<Checkbox value="remember" sx={{
-                                              color: Colors.color1,
-                                              '&.Mui-checked': {
-                                                  color: Colors.color2,
-                                              },
-                                          }}/>}/>
                         <Button
                             type="submit"
                             fullWidth

@@ -30,14 +30,17 @@ export class CallConnectionService {
         window.addEventListener('beforeunload', this.handleBeforeUnload);
     }
 
-    public async initializeConnection(userId: number, roomId: number, setPeerConnected: Dispatch<SetStateAction<boolean>>) {
+    public async initializeConnection(username: string, roomId: number,
+                                      setPeerConnected: Dispatch<SetStateAction<boolean>>,
+                                      signalingClient: SignalingClient | undefined) {
         this.setPeerConnected = setPeerConnected;
-        this.client = new SignalingClient(roomId, userId);
+        this.client = new SignalingClient(roomId, username);
         const connection = await this.client.connectToRoom();
 
         connection.on("joined_room", this.handleUserJoined)
         connection.on("msg_to_peer", this.handleMessageFromPeer)
         connection.on("left_room", this.handlePeerLeft)
+        // connection.on("chat_to_peer", handleChatToPeer)
 
         // ask for video and audio permission
         this.localStream = await navigator.mediaDevices.getUserMedia(this.videoConstraints)

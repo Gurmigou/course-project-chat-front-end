@@ -22,4 +22,10 @@ export const JoinChatButton = styled(Button)({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
+    '&:hover': {
+        background: Colors.color5
+    },
+    '&:active': {
+        background: Colors.color5
+    },
 })

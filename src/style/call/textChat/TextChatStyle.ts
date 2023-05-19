@@ -2,6 +2,8 @@ import {Fab, styled, TextField} from "@mui/material";
 import {Colors} from "../../../assets/Colors";
 
 export type TextChatParams = {
+    roomId: number;
+    peerUsername: string;
     open: boolean;
 };
 

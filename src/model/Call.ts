@@ -10,8 +10,16 @@ export type PeerOffer = {
 }
 
 export type CallInfo = {
-    userId: number,
+    username: string,
+    peerUsername: string,
     roomId: number,
     cameraOn: boolean,
     peerCameraOn: boolean,
+    handleChatToPeer: (message: string) => void,
+}
+
+export type ChatRoom = {
+    chatId: number;
+    yourUsername: string;
+    peerUsername: string;
 }

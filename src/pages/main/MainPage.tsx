@@ -9,7 +9,7 @@ export const MainPage = () => {
             <MainContent>
                 <NavHeader/>
                 <JoinChatButton variant="contained">
-                    <NavLink to={'/room'} style={{textDecoration: 'none', color: 'white'}}>Join chat</NavLink>
+                    <NavLink to={'/waiting-room'} style={{textDecoration: 'none', color: 'white'}}>Join chat</NavLink>
                 </JoinChatButton>
             </MainContent>
         </MainContainer>

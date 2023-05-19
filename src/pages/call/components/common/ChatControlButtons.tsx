@@ -21,12 +21,12 @@ export const ChatControlButtons = ({micOff, videoOff, handleMicOff, handleVideoO
     return (
         <ChatControlButtonsContainer>
             <Control onClick={handleMicOff}>
-                {micOff ? <MicIcon style={{color: 'white'}}/> :
-                    <MicOffIcon style={{color: 'white'}}/>}
+                {micOff ? <MicOffIcon style={{color: 'white'}}/> :
+                    <MicIcon style={{color: 'white'}}/>}
             </Control>
             <Control onClick={handleVideoOff}>
-                {videoOff ? <VideocamIcon style={{color: 'white'}}/> :
-                    <VideocamOffIcon style={{color: 'white'}}/>}
+                {videoOff ? <VideocamOffIcon style={{color: 'white'}}/> :
+                    <VideocamIcon style={{color: 'white'}}/>}
             </Control>
             <CallEnd onClick={handleCallEnd}>
                 <CallEndIcon style={{color: 'white'}}/>

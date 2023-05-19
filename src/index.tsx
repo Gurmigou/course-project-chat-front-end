@@ -8,6 +8,7 @@ import {SignUp} from "./pages/signUp/SignUp";
 import {UserCabinet} from "./pages/user/UserCabinet";
 import {UserStats} from "./pages/stats/UserStats";
 import './index.css';
+import {WaitingRoom} from "./pages/waitingRoom/WaitingRoom";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         element: <MainPage/>
     },
     {
-        path: '/room',
+        path: '/room/:chatId',
         element: <Call/>
     },
     {
@@ -37,11 +38,15 @@ const router = createBrowserRouter([
     {
         path: '/stats',
         element: <UserStats/>
+    },
+    {
+        path: '/waiting-room',
+        element: <WaitingRoom/>
     }
 ]);
 
 root.render(
-    <React.StrictMode>
+    // <React.StrictMode>
         <RouterProvider router={router}/>
-    </React.StrictMode>
+    // </React.StrictMode>
 );

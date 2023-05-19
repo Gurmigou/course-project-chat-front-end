@@ -10,11 +10,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
-import {InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {Alert, AlertTitle, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {Colors} from "../../assets/Colors";
 import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField} from '../../style/signUp/SignUpStyle';
 import {NavLink, useNavigate} from "react-router-dom";
-import {Interest, interests} from "../../model/user/CommonUser";
+import {interests} from "../../model/user/CommonUser";
 import axios from "axios";
 
 const Copyright = (props: any) => {
@@ -37,8 +37,20 @@ export const SignUp = () => {
     const [wantChatGender, setWantChatGender] = React.useState<string>('');
     const [selectedInterests, setSelectedInterests] = React.useState<string[]>([]);
 
+    const [error, setError] = React.useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = React.useState<string>('');
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    React.useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(false);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -50,18 +62,18 @@ export const SignUp = () => {
             interests: selectedInterests,
         };
 
-        console.log("register", register)
+        setError(false);
 
-        try {
-            const response = await axios.post('http://localhost:8082/api/v1/security/register', register);
-            if (response.status >= 200 && response.status < 300) {
-                navigate('/sign-in');
-            }
-        } catch (error) {
-            console.error('Error during registration:', error);
-        }
+        axios.post('http://localhost:8085/api/v1/security/register', register)
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    navigate('/sign-in');
+                }
+            }).catch(error => {
+                setError(true);
+                setErrorMessage(error.response.data.message);
+            })
     };
-
 
     const handeMyGenderChange = (event: SelectChangeEvent) => {
         setMyGender(event.target.value);
@@ -88,6 +100,11 @@ export const SignUp = () => {
                         alignItems: 'center',
                     }}
                 >
+                    {error && (
+                        <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="error" sx={{mt: 2}}>
+                            {!!errorMessage ? errorMessage : 'An error happened while signing up!'}
+                        </Alert>
+                    )}
                     <Avatar sx={{m: 1, bgcolor: Colors.color3}}>
                         <NavLink to={'/'} style={{color: 'white'}}>
                             <VideoChatIcon/>

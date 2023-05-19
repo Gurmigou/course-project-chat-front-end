@@ -9,7 +9,7 @@ export type Message = {
     myMessage: boolean;
 }
 
-export const TextChat = ({open}: TextChatParams) => {
+export const TextChat = ({open, roomId, peerUsername}: TextChatParams) => {
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState<string>("");
 
@@ -25,7 +25,7 @@ export const TextChat = ({open}: TextChatParams) => {
     }
 
     return (
-        <TextChatWrapper open={open}>
+        <TextChatWrapper open={open} roomId={0} peerUsername={''}>
             <TextChatContainer>
                 <ChatMessage>
                     {messages.map((message, index) => (
