@@ -6,7 +6,7 @@ import {VideoInfoCard} from "./VideoInfoCard";
 import {NicknameText, VideoChatContainer, VideoGrid, VideoPlayer, VideoPlayerContainer} from "../../../../style/call/videoChat/VideoChatStyle";
 import {SignalingContext} from "../../service/SignalingContext";
 
-export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn, handleChatToPeer}: CallInfo) => {
+export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn}: CallInfo) => {
     const [peerConnected, setPeerConnected] = useState<boolean>(false);
 
     const videoPlayerUser1 = useRef<HTMLVideoElement>(null);
@@ -16,15 +16,15 @@ export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraO
     const signalingClient = useContext(SignalingContext);
 
     useEffect(() => {
-        if (!connected && videoPlayerUser1.current && videoPlayerUser2.current) {
+        if (!connected && videoPlayerUser1.current && videoPlayerUser2.current && signalingClient) {
             connected = true;
             const callConnection = new CallConnectionService(
                 videoPlayerUser1.current,
                 videoPlayerUser2.current);
-            callConnection.initializeConnection(username, roomId, setPeerConnected, handleChatToPeer)
+            callConnection.initializeConnection(username, roomId, setPeerConnected, signalingClient)
                 .then(() => console.log('Connection initialized'));
         }
-    }, [username]);
+    }, [username, signalingClient]);
 
     const getMyInfoCard = () => {
         if (!cameraOn)

@@ -1,11 +1,6 @@
 import {Fab, styled, TextField} from "@mui/material";
 import {Colors} from "../../../assets/Colors";
-
-export type TextChatParams = {
-    roomId: number;
-    peerUsername: string;
-    open: boolean;
-};
+import {TextChatParams} from "../../../model/Call";
 
 export const TextChatWrapper = styled("div")<TextChatParams>(({open}) => ({
     margin: "1.5rem",

@@ -15,11 +15,22 @@ export type CallInfo = {
     roomId: number,
     cameraOn: boolean,
     peerCameraOn: boolean,
-    handleChatToPeer: (message: string) => void,
 }
 
 export type ChatRoom = {
     chatId: number;
     yourUsername: string;
     peerUsername: string;
+}
+
+export type TextChatParams = {
+    roomId: number;
+    peerUsername: string;
+    username: string;
+    open: boolean;
+};
+
+export type ReceivedMessage = {
+    from: string;
+    message: string;
 }

@@ -19,6 +19,10 @@ export class SignalingClient {
         return this.socket;
     }
 
+    public getConnection(): Socket | null {
+        return this.socket;
+    }
+
     public disconnectFromRoom(): void {
         if (!this.socket) return;
         this.socket.emit("left_room", this.username, this.roomId);

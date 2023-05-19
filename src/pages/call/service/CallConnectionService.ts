@@ -32,9 +32,10 @@ export class CallConnectionService {
 
     public async initializeConnection(username: string, roomId: number,
                                       setPeerConnected: Dispatch<SetStateAction<boolean>>,
-                                      signalingClient: SignalingClient | undefined) {
+                                      signalingClient: SignalingClient) {
         this.setPeerConnected = setPeerConnected;
-        this.client = new SignalingClient(roomId, username);
+        // this.client = new SignalingClient(roomId, username);
+        this.client = signalingClient;
         const connection = await this.client.connectToRoom();
 
         connection.on("joined_room", this.handleUserJoined)

@@ -14,7 +14,7 @@ export const Call = () => {
     const peerUsername = location.state.chatRoom.peerUsername;
     const roomId = location.state.chatRoom.chatId;
 
-    const [signalingClient, setSignalingClient] = useState<SignalingClient | undefined>(undefined);
+    const [signalingClient, setSignalingClient] = useState<SignalingClient>();
 
     useEffect(() => {
         const client = new SignalingClient(roomId, username);
@@ -43,9 +43,7 @@ export const Call = () => {
             <CallContainer>
                 <ChatContainer>
                     <VideoChat username={username} peerUsername={peerUsername} roomId={roomId}
-                               cameraOn={!videoOff} peerCameraOn={true}
-                               handleChatToPeer={(s: string) => {
-                               }}/>
+                               cameraOn={!videoOff} peerCameraOn={true}/>
                     <ChatControlButtons micOff={micOff}
                                         videoOff={videoOff}
                                         handleMicOff={handleMicOff}
@@ -55,7 +53,7 @@ export const Call = () => {
                                         handleNextPeer={handleNextPeer}
                     />
                 </ChatContainer>
-                <TextChat open={chatOpen} roomId={roomId} peerUsername={peerUsername}></TextChat>
+                <TextChat open={chatOpen} roomId={roomId} username={username} peerUsername={peerUsername}></TextChat>
             </CallContainer>
         </SignalingContext.Provider>
     );
