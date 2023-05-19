@@ -8,18 +8,46 @@ import {
     UserTextField
 } from "../../style/user/UserStyle";
 import {Colors} from "../../assets/Colors";
-import {Box, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {Alert, Box, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import * as React from "react";
-import {interests} from "../../model/user/CommonUser";
-import {SignUpAutocomplete} from "../../style/signUp/SignUpStyle";
+import {FormEvent, useEffect} from "react";
+import axios from "axios";
+import {InterestsValues} from "../../model/user/CommonUser";
 
 export const UserCabinet = () => {
+    const [success, setSuccess] = React.useState<boolean>(false);
+    const [error, setError] = React.useState<boolean>(false);
+
+    const [username, setUsername] = React.useState<string>(localStorage.getItem('username') || '');
     const [myGender, setMyGender] = React.useState<string>('');
     const [wantChatGender, setWantChatGender] = React.useState<string>('');
+    const [interests, setInterests] = React.useState<string[]>([]);
 
-    const handeMyGenderChange = (event: SelectChangeEvent) => {
+    useEffect(() => {
+        axios.get('http://localhost:8085/api/v1/user?username=' + localStorage.getItem('username'))
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    const {myGender, wantChatGender} = response.data;
+
+                    if (myGender !== undefined) {
+                        setMyGender(myGender);
+                    } else {
+                        setMyGender('');
+                    }
+
+                    if (wantChatGender !== undefined) {
+                        setWantChatGender(wantChatGender);
+                    } else {
+                        setWantChatGender('');
+                    }
+                }
+            })
+    }, [])
+
+
+    const handleMyGenderChange = (event: SelectChangeEvent) => {
         setMyGender(event.target.value);
     }
 
@@ -27,25 +55,67 @@ export const UserCabinet = () => {
         setWantChatGender(event.target.value);
     };
 
-    function handleSubmit() {
-
+    const getGreeting = (): string => {
+        return `Welcome, ${localStorage.getItem('username')} 👋`;
     }
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        setSuccess(false);
+        setError(false);
+
+        const updatedUserCabinetData = {
+            username: username,
+            myGender: myGender,
+            wantChatGender: wantChatGender,
+            interests: interests
+        };
+
+        console.log("Update: ", updatedUserCabinetData)
+
+        const token = localStorage.getItem('token');
+        axios.put('http://localhost:8085/api/v1/user', updatedUserCabinetData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then(response => {
+                if (response.status >= 200 && response.status < 300) {
+                    setSuccess(true);
+                }
+            })
+            .catch(error => {
+                setError(true)
+            });
+    }
+
+    const handleInterestsChange = (event: any, value: any) => {
+        setInterests(value.map((interest: any) => interest.title));
+    };
 
     return (
         <UserCabinetWrapper>
             <NavHeader/>
+            {error && (
+                <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="error" sx={{mt: 2}}>
+                    Update failed
+                </Alert>
+            )}
+            {success && (
+                <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="success" sx={{mt: 2}}>
+                    Update successfully
+                </Alert>
+            )}
             <UserCabinetContainer>
-                <Greeting>Welcome, Nickname 👋</Greeting>
+                <Greeting>{getGreeting()}</Greeting>
 
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}
                      style={{maxWidth: '720px', margin: '0 auto'}}>
-                    <UserTextField margin="normal" required fullWidth id="email"
-                                   label="Nickname" name="nickname" autoComplete="nickname" autoFocus
-                                   InputLabelProps={{style: {color: Colors.color7}}}
-                                   InputProps={{sx: {color: "white"}}}
-                    />
-                    <UserTextField margin="normal" required fullWidth name="password"
-                                   label="Password" type="password" id="password"
+                    <UserTextField margin="normal" required fullWidth id="username"
+                                   value={username}
+                                   onChange={(event) => setUsername(event.target.value)}
+                                   label="Username" name="username" autoComplete="username" autoFocus
                                    InputLabelProps={{style: {color: Colors.color7}}}
                                    InputProps={{sx: {color: "white"}}}
                     />
@@ -56,16 +126,16 @@ export const UserCabinet = () => {
                             id="demo-select-small"
                             value={myGender}
                             label="Select gender"
-                            onChange={handeMyGenderChange}
+                            onChange={handleMyGenderChange}
                             style={{textAlign: 'left'}}
                             sx={{
                                 color: "white",
                                 '& .MuiSelect-icon': {color: "white"}
                             }}
                         >
-                            <MenuItem value={1}>Male</MenuItem>
-                            <MenuItem value={2}>Female</MenuItem>
-                            <MenuItem value={3}>I don't want to tell</MenuItem>
+                            <MenuItem value={'Male'}>Male</MenuItem>
+                            <MenuItem value={'Female'}>Female</MenuItem>
+                            <MenuItem value={'I don\'t want to tell'}>I don't want to tell</MenuItem>
                         </Select>
                     </UserFormControl>
                     <UserFormControl sx={{width: '100%', marginTop: '30px'}} required>
@@ -84,25 +154,29 @@ export const UserCabinet = () => {
                                 '& .MuiSelect-icon': {color: "white"}
                             }}
                         >
-                            <MenuItem value={1}>Male</MenuItem>
-                            <MenuItem value={2}>Female</MenuItem>
-                            <MenuItem value={3}>No matter</MenuItem>
+                            <MenuItem value={'Male'}>Male</MenuItem>
+                            <MenuItem value={'Female'}>Female</MenuItem>
+                            <MenuItem value={'No matter'}>No matter</MenuItem>
                         </Select>
                     </UserFormControl>
-                    <UserAutocomplete style={{margin: '20px 0'}}
-                                      multiple
-                                      id="tags-standard"
-                                      options={interests}
-                                      getOptionLabel={(option: any) => option.title}
-                                      renderInput={(params) => (
-                                          <TextField
-                                              {...params}
-                                              variant="standard"
-                                              label="Select your interests"
-                                              placeholder="Favorites"
-                                              InputLabelProps={{style: {color: Colors.color7, fontSize: '18px'}}}
-                                          />
-                                      )}
+                    <UserAutocomplete
+                        style={{margin: '20px 0'}}
+                        multiple
+                        id="tags-standard"
+                        options={InterestsValues}
+                        getOptionLabel={(option: any) => option.title}
+                        defaultValue={InterestsValues.filter(interest => interests.includes(interest.title))}
+                        value={InterestsValues.filter(interest => interests.includes(interest.title))}
+                        onChange={handleInterestsChange}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                variant="standard"
+                                label="Select your interests"
+                                placeholder="Favorites"
+                                InputLabelProps={{style: {color: Colors.color7, fontSize: '18px'}}}
+                            />
+                        )}
                     />
                     <Button type="submit" variant="contained" style={{width: '20%'}}
                             sx={{

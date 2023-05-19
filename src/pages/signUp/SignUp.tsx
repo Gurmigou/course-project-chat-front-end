@@ -14,7 +14,7 @@ import {Alert, AlertTitle, InputLabel, MenuItem, Select, SelectChangeEvent} from
 import {Colors} from "../../assets/Colors";
 import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField} from '../../style/signUp/SignUpStyle';
 import {NavLink, useNavigate} from "react-router-dom";
-import {interests} from "../../model/user/CommonUser";
+import {InterestsValues} from "../../model/user/CommonUser";
 import axios from "axios";
 
 const Copyright = (props: any) => {
@@ -156,7 +156,7 @@ export const SignUp = () => {
                                             multiple
                                             onChange={handleInterestsChange}
                                             id="tags-standard"
-                                            options={interests}
+                                            options={InterestsValues}
                                             getOptionLabel={(option: any) => option.title}
                                             renderInput={(params) => (
                                                 <TextField

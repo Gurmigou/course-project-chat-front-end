@@ -55,6 +55,16 @@ export const UserFormControl = styled(FormControl)({
 });
 
 export const UserAutocomplete = styled(Autocomplete)({
+    '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+            borderColor: Colors.color5,
+        },
+        '&:hover fieldset': {
+            borderColor: Colors.color6,
+        },
+        '&.Mui-focused fieldset': {
+            borderColor: Colors.color5,
+        }},
     '& label.Mui-focused': {
         color: Colors.color7,
     },

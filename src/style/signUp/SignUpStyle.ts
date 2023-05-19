@@ -19,9 +19,15 @@ export const SignUpTextField = styled(TextField)({
 });
 
 export const SignUpFormControl = styled(FormControl)({
+    '& label.Mui-focused': {
+        color: Colors.color4,
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: Colors.color4,
+    },
     '& .MuiOutlinedInput-root': {
         '& fieldset': {
-            color: Colors.color4,
+            borderColor: '#c4c4c4',
         },
         '&:hover fieldset': {
             borderColor: Colors.color4,
@@ -42,6 +48,21 @@ export const SignUpAutocomplete = styled(Autocomplete)({
         },
         '&.Mui-focused fieldset': {
             borderColor: Colors.color4,
+        },
+    },
+    '& label.Mui-focused': {
+        color: Colors.color4,
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: Colors.color4,
+    },
+    '& .MuiAutocomplete-tag': {
+        backgroundColor: Colors.color4,
+        color: Colors.color4
+    },
+    '& .MuiAutocomplete-inputRoot': {
+        '& .MuiAutocomplete-input': {
+            color: Colors.color4,
         },
     },
 });

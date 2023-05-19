@@ -3,8 +3,6 @@ import {FormEvent} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -44,6 +42,7 @@ export const SignIn = () => {
             .then(response => {
                 if (response.status >= 200 && response.status < 300) {
                     localStorage.setItem('token', response.data.token);
+                    localStorage.setItem('username', login.username);
                     navigate('/');
                 }
             })
