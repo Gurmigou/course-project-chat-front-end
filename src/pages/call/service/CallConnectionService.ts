@@ -9,8 +9,10 @@ export class CallConnectionService {
     private myVideo: HTMLVideoElement;
     private peerVideo: HTMLVideoElement;
     private client: SignalingClient | undefined;
+
     private setPeerConnected: Dispatch<SetStateAction<boolean>> | undefined;
     private setPeerCameraOff: Dispatch<SetStateAction<boolean>> | undefined;
+    private goToMainPage: (() => void | undefined) | undefined;
 
     private readonly servers = {
         iceServers: [
@@ -22,7 +24,7 @@ export class CallConnectionService {
 
     private readonly videoConstraints: MediaStreamConstraints = {
         video: true,
-        audio: false
+        audio: false // TODO change to true
     }
 
     constructor(userVideo1: HTMLVideoElement, userVideo2: HTMLVideoElement) {
@@ -34,9 +36,11 @@ export class CallConnectionService {
     public async initializeConnection(username: string, roomId: number,
                                       signalingClient: SignalingClient,
                                       setPeerConnected: Dispatch<SetStateAction<boolean>>,
-                                      setPeerCameraOff: Dispatch<SetStateAction<boolean>>) {
+                                      setPeerCameraOff: Dispatch<SetStateAction<boolean>>,
+                                      goToMainPage: () => void) {
         this.setPeerConnected = setPeerConnected;
         this.setPeerCameraOff = setPeerCameraOff;
+        this.goToMainPage = goToMainPage;
 
         this.client = signalingClient;
         const connection = await this.client.connectToRoom();
@@ -53,7 +57,7 @@ export class CallConnectionService {
         this.myVideo.srcObject = this.localStream
     }
 
-    private handleBeforeUnload = (): void => {
+    public handleBeforeUnload = (): void => {
         this.client?.disconnectFromRoom();
     }
 
@@ -90,6 +94,7 @@ export class CallConnectionService {
 
     private handlePeerLeft = (peerId: number) => {
         this.setPeerConnected!(false);
+        this.goToMainPage!();
     }
 
     private handlePeerCameraToggle = (state: string) => {

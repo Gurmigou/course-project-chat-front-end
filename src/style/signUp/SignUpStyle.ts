@@ -56,10 +56,6 @@ export const SignUpAutocomplete = styled(Autocomplete)({
     '& .MuiInput-underline:after': {
         borderBottomColor: Colors.color4,
     },
-    '& .MuiAutocomplete-tag': {
-        backgroundColor: Colors.color4,
-        color: Colors.color4
-    },
     '& .MuiAutocomplete-inputRoot': {
         '& .MuiAutocomplete-input': {
             color: Colors.color4,

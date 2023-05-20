@@ -5,8 +5,9 @@ import {useEffect, useState} from "react";
 import {CallContainer, ChatContainer} from "../../../style/call/CallStyle";
 import {useLocation, useNavigate} from "react-router-dom";
 import {SignalingClient} from "../service/SignalingClient";
-import { SignalingContext } from "../service/SignalingContext";
+import {SignalingContext} from "../service/SignalingContext";
 import {CallConnectionService} from "../service/CallConnectionService";
+import axios from "axios";
 
 export const Call = () => {
     const location = useLocation();
@@ -42,13 +43,37 @@ export const Call = () => {
         connectionService?.handleCameraToggle(roomId, username)
     }
 
-    const handleCallEnd = () => {
-        navigate('/')
+    const handleTimeout = () => {
+        const token = localStorage.getItem('token');
+        console.log('handleTimeout')
+        axios.post('http://localhost:8086/api/v1/chat/end-chat?peerUsername=' + peerUsername, null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(() => {
+            connectionService?.handleBeforeUnload()
+            navigate('/');
+        });
     };
 
     const handleNextPeer = () => {
-        // TODO add end of chat request
-        navigate('/waiting-room');
+        handleTerminateCall('/waiting-room')
+    }
+
+    const handleLeaveCall = () => {
+        handleTerminateCall('/')
+    }
+
+    const handleTerminateCall = (url: string) => {
+        const token = localStorage.getItem('token');
+        axios.post('http://localhost:8086/api/v1/chat/terminate', null, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then(() => {
+            connectionService?.handleBeforeUnload()
+            navigate(url);
+        });
     }
 
     return (
@@ -59,13 +84,14 @@ export const Call = () => {
                                cameraOn={!videoOff} peerCameraOn={!peerCameraOff}
                                setConnectionService={setConnectionService}
                                setPeerCameraOff={setPeerCameraOff}
+                               handleTimeout={handleTimeout}
                     />
                     <ChatControlButtons micOff={micOff}
                                         videoOff={videoOff}
                                         handleMicroToggle={handleMicroToggle}
                                         handleVideoToggle={handleVideoToggle}
                                         handleChatOpen={handleChatOpen}
-                                        handleCallEnd={handleCallEnd}
+                                        handleLeaveCall={handleLeaveCall}
                                         handleNextPeer={handleNextPeer}
                     />
                 </ChatContainer>

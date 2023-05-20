@@ -20,6 +20,7 @@ export type CallInfo = {
     peerCameraOn: boolean;
     setConnectionService: Dispatch<SetStateAction<CallConnectionService | undefined>>;
     setPeerCameraOff: Dispatch<SetStateAction<boolean>>;
+    handleTimeout: () => void;
 }
 
 export type ChatRoom = {

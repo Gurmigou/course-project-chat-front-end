@@ -20,3 +20,25 @@ export type Interest = {
     title: string,
     id: number,
 }
+
+export type UserStatsCardProps = {
+    firstPeerName: string,
+    secondPeerName: string,
+    duration: string,
+    date: Date,
+}
+
+export type ChatControlButtonsProps = {
+    micOff: boolean;
+    videoOff: boolean;
+    handleMicroToggle: () => void;
+    handleVideoToggle: () => void;
+    handleLeaveCall: () => void;
+    handleChatOpen: () => void;
+    handleNextPeer: () => void;
+}
+
+export type ChatTimerProps = {
+    startTimer: boolean;
+    handleTimeout: () => void;
+};

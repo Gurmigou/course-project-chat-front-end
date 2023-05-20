@@ -1,20 +1,27 @@
-import { LinearProgress } from "@mui/material";
-import { useEffect, useState } from "react";
-import { ChatTimerContainer, linearProgressStyle, TimerTitle } from "../../../../style/call/common/ChatTimerStyle";
-import {useNavigate} from "react-router-dom";
+import {LinearProgress} from "@mui/material";
+import {useEffect, useState} from "react";
+import {ChatTimerContainer, linearProgressStyle, TimerTitle} from "../../../../style/call/common/ChatTimerStyle";
+import {ChatTimerProps} from "../../../../model/user/CommonUser";
 
-type ChatTimerProps = {
-    startTimer: boolean;
-};
-
-export const ChatTimer = ({ startTimer }: ChatTimerProps) => {
-    const navigate = useNavigate();
-
+export const ChatTimer = ({startTimer, handleTimeout}: ChatTimerProps) => {
     const [progress, setProgress] = useState(100);
     const [timeRemaining, setTimeRemaining] = useState("05:00");
     const [initialTimestamp, setInitialTimestamp] = useState<number | null>(null);
-    const duration = 300000; // 5 minutes in milliseconds
+    const duration = 50000; // 5 minutes in milliseconds
     const interval = 50; // update interval in milliseconds
+
+    const timerProcess = (storedTimestampNumber: number, savedElapsedMillisecondsNumber: number): number => {
+        const elapsedMilliseconds = Date.now() - storedTimestampNumber + savedElapsedMillisecondsNumber;
+        const elapsedTime = Math.min(elapsedMilliseconds, duration);
+        const remainingMilliseconds = Math.max(duration - elapsedTime, 0);
+
+        setProgress(Math.max(0, (remainingMilliseconds / duration) * 100));
+
+        const minutes = Math.floor(remainingMilliseconds / 60000);
+        const seconds = Math.floor((remainingMilliseconds % 60000) / 1000);
+        setTimeRemaining(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
+        return elapsedTime;
+    }
 
     useEffect(() => {
         const storedTimestamp = window.localStorage.getItem("chatTimerTimestamp");
@@ -24,15 +31,7 @@ export const ChatTimer = ({ startTimer }: ChatTimerProps) => {
             const storedTimestampNumber = parseInt(storedTimestamp, 10);
             const savedElapsedMillisecondsNumber = parseInt(savedElapsedMilliseconds, 10);
 
-            const elapsedMilliseconds = Date.now() - storedTimestampNumber + savedElapsedMillisecondsNumber;
-            const elapsedTime = Math.min(elapsedMilliseconds, duration);
-            const remainingMilliseconds = Math.max(duration - elapsedTime, 0);
-
-            setProgress(Math.max(0, (remainingMilliseconds / duration) * 100));
-
-            const minutes = Math.floor(remainingMilliseconds / 60000);
-            const seconds = Math.floor((remainingMilliseconds % 60000) / 1000);
-            setTimeRemaining(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
+            timerProcess(storedTimestampNumber, savedElapsedMillisecondsNumber);
         }
 
         if (startTimer && !initialTimestamp) {
@@ -43,16 +42,7 @@ export const ChatTimer = ({ startTimer }: ChatTimerProps) => {
 
         const intervalId = setInterval(() => {
             if (initialTimestamp) {
-                const elapsedMilliseconds = Date.now() - initialTimestamp;
-                const elapsedTime = Math.min(elapsedMilliseconds, duration);
-                const remainingMilliseconds = Math.max(duration - elapsedTime, 0);
-
-                setProgress(Math.max(0, (remainingMilliseconds / duration) * 100));
-
-                const minutes = Math.floor(remainingMilliseconds / 60000);
-                const seconds = Math.floor((remainingMilliseconds % 60000) / 1000);
-                setTimeRemaining(`${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`);
-
+                const elapsedTime = timerProcess(initialTimestamp, 0)
                 window.localStorage.setItem("chatTimerElapsed", String(elapsedTime));
 
                 if (elapsedTime >= duration) {
@@ -60,8 +50,7 @@ export const ChatTimer = ({ startTimer }: ChatTimerProps) => {
                     window.localStorage.removeItem("chatTimerTimestamp");
                     window.localStorage.removeItem("chatTimerElapsed");
 
-                    // TODO End of call
-                    navigate('/');
+                    handleTimeout();
                 }
             }
 
@@ -75,7 +64,7 @@ export const ChatTimer = ({ startTimer }: ChatTimerProps) => {
     return (
         <ChatTimerContainer>
             <TimerTitle>{timeRemaining}</TimerTitle>
-            <LinearProgress variant="determinate" value={progress} style={linearProgressStyle} />
+            <LinearProgress variant="determinate" value={progress} style={linearProgressStyle}/>
         </ChatTimerContainer>
     );
 };

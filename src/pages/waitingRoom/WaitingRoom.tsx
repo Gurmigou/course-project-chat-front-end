@@ -8,9 +8,13 @@ import {useNavigate} from "react-router-dom";
 
 export const WaitingRoom = () => {
     const navigate = useNavigate();
-    
+
     React.useEffect(() => {
-        joinChat();
+        const timeoutId = setTimeout(() => {
+            joinChat();
+        }, 1500); // wait 1.5 seconds before calling joinChat
+
+        return () => clearTimeout(timeoutId); // clear the timeout if the component is unmounted
     }, []);
 
     const joinChat = async () => {
@@ -30,7 +34,6 @@ export const WaitingRoom = () => {
             console.error('Error while joining chat:', error);
         }
     };
-
 
     return (
         <MainContainer>

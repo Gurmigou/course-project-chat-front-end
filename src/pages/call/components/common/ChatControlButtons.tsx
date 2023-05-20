@@ -6,18 +6,9 @@ import CallEndIcon from '@mui/icons-material/CallEnd';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ChatIcon from '@mui/icons-material/Chat';
 import {CallEnd, ChatControlButtonsContainer, Control, NextPeer} from "../../../../style/call/common/ChatControlButtonsStyle";
+import {ChatControlButtonsProps} from "../../../../model/user/CommonUser";
 
-type ChatControlButtonsProps = {
-    micOff: boolean;
-    videoOff: boolean;
-    handleMicroToggle: () => void;
-    handleVideoToggle: () => void;
-    handleCallEnd: () => void;
-    handleChatOpen: () => void;
-    handleNextPeer: () => void;
-}
-
-export const ChatControlButtons = ({micOff, videoOff, handleMicroToggle, handleVideoToggle, handleChatOpen, handleCallEnd, handleNextPeer}: ChatControlButtonsProps) => {
+export const ChatControlButtons = ({micOff, videoOff, handleMicroToggle, handleVideoToggle, handleChatOpen, handleLeaveCall, handleNextPeer}: ChatControlButtonsProps) => {
     return (
         <ChatControlButtonsContainer>
             <Control onClick={handleMicroToggle}>
@@ -28,7 +19,7 @@ export const ChatControlButtons = ({micOff, videoOff, handleMicroToggle, handleV
                 {videoOff ? <VideocamOffIcon style={{color: 'white'}}/> :
                     <VideocamIcon style={{color: 'white'}}/>}
             </Control>
-            <CallEnd onClick={handleCallEnd}>
+            <CallEnd onClick={handleLeaveCall}>
                 <CallEndIcon style={{color: 'white'}}/>
             </CallEnd>
             <Control onClick={handleChatOpen}>

@@ -5,8 +5,12 @@ import {CallInfo} from "../../../../model/Call";
 import {VideoInfoCard} from "./VideoInfoCard";
 import {NicknameText, VideoChatContainer, VideoGrid, VideoPlayer, VideoPlayerContainer} from "../../../../style/call/videoChat/VideoChatStyle";
 import {SignalingContext} from "../../service/SignalingContext";
+import {useNavigate} from "react-router-dom";
 
-export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn, setConnectionService, setPeerCameraOff}: CallInfo) => {
+export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraOn, setConnectionService,
+                              setPeerCameraOff, handleTimeout}: CallInfo) => {
+    const navigate = useNavigate();
+
     const [peerConnected, setPeerConnected] = useState<boolean>(false);
 
     const videoPlayerUser1 = useRef<HTMLVideoElement>(null);
@@ -21,7 +25,8 @@ export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraO
             const callConnection = new CallConnectionService(
                 videoPlayerUser1.current,
                 videoPlayerUser2.current);
-            callConnection.initializeConnection(username, roomId, signalingClient, setPeerConnected, setPeerCameraOff)
+            callConnection.initializeConnection(username, roomId, signalingClient, setPeerConnected,
+                                                setPeerCameraOff, () => navigate('/'))
                 .then(() => console.log('Connection initialized'));
             setConnectionService(callConnection)
         }
@@ -44,7 +49,7 @@ export const VideoChat = ({username, peerUsername, roomId, cameraOn, peerCameraO
 
     return (
         <VideoChatContainer>
-            <ChatTimer startTimer={peerConnected}></ChatTimer>
+            <ChatTimer startTimer={peerConnected} handleTimeout={handleTimeout}></ChatTimer>
             <VideoGrid>
                 <VideoPlayerContainer>
                     <VideoPlayer ref={videoPlayerUser1}

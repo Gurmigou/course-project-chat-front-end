@@ -80,4 +80,7 @@ export const UserAutocomplete = styled(Autocomplete)({
             color: 'white',
         },
     },
+    '& .MuiIconButton-root': {
+        color: '#fff', // changes the arrow color
+    },
 });

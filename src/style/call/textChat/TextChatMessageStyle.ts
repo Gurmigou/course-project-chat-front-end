@@ -31,7 +31,7 @@ export const ChatMessage = styled('p')<Message>(({myMessage}) => ({
     background: myMessage ? '#623ac7' : '#495C83',
     color: 'white',
     textWrap: 'wrap',
-    breakWord: 'break-word',
+    wordBreak: 'break-word',
     textAlign: myMessage ? 'left' : 'right',
     lineHeight: '1.5rem',
 }));

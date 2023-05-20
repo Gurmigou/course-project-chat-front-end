@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import VideoChatIcon from '@mui/icons-material/VideoChat';
-import {Alert, AlertTitle, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
+import {Alert, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import {Colors} from "../../assets/Colors";
 import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField} from '../../style/signUp/SignUpStyle';
 import {NavLink, useNavigate} from "react-router-dom";
