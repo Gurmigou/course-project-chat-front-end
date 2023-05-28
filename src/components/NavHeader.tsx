@@ -14,7 +14,7 @@ export const NavHeader = () => {
                         <VideoCameraBackIcon style={{fontSize: 35, color: 'white'}}></VideoCameraBackIcon>
                     </NavLink>
                 </LogoContainer>
-                <p style={{color: 'white'}}>Snap Chat</p>
+                <p style={{color: 'white'}}>Snap Meet</p>
             </TopLeftLogo>
             <TopRightLogo>
                 <NavLink to={'/stats'}>

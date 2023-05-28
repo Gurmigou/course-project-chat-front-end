@@ -16,6 +16,7 @@ import {SignUpAutocomplete, SignUpContainer, SignUpFormControl, SignUpTextField}
 import {NavLink, useNavigate} from "react-router-dom";
 import {InterestsValues} from "../../model/user/CommonUser";
 import axios from "axios";
+import {Register} from "../../model/security/Security";
 
 const Copyright = (props: any) => {
     return (
@@ -57,8 +58,8 @@ export const SignUp = () => {
         const register: Register = {
             username: data.get('username') as string,
             password: data.get('password') as string,
-            myGender: myGender,
-            genderPreference: wantChatGender,
+            myGender: Number(myGender) - 1,
+            genderPreference: Number(wantChatGender) - 1,
             interests: selectedInterests,
         };
 

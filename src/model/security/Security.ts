@@ -1,12 +1,14 @@
-type Login = {
+export type Login = {
     username: string,
     password: string,
 }
 
-type Register = {
+export type Register = {
     username: string,
     password: string,
-    myGender: string,
-    genderPreference: string,
+    myGender: number,
+    genderPreference: number,
     interests: string[],
 }
+
+export type UpdateUser = Omit<Register, 'username' | 'password'>;

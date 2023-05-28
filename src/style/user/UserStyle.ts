@@ -68,6 +68,9 @@ export const UserAutocomplete = styled(Autocomplete)({
     '& label.Mui-focused': {
         color: Colors.color7,
     },
+    '& .MuiInput-underline': {
+        borderBottomColor: Colors.color5,
+    },
     '& .MuiInput-underline:after': {
         borderBottomColor: Colors.color5,
     },
@@ -82,5 +85,14 @@ export const UserAutocomplete = styled(Autocomplete)({
     },
     '& .MuiIconButton-root': {
         color: '#fff', // changes the arrow color
+    },
+    '& .MuiInput-underline:before': {
+        borderBottomColor: Colors.color5, // change color here
+    },
+    '& .MuiInput-underline:hover:before': {
+        borderBottomColor: Colors.color6, // change hover color here
+    },
+    '& .MuiInput-underline.Mui-focused:before': {
+        borderBottomColor: Colors.color6, // change focus color here
     },
 });

@@ -1,12 +1,5 @@
 import {NavHeader} from "../../components/NavHeader";
-import {
-    Greeting,
-    UserAutocomplete,
-    UserCabinetContainer,
-    UserCabinetWrapper,
-    UserFormControl,
-    UserTextField
-} from "../../style/user/UserStyle";
+import {Greeting, UserAutocomplete, UserCabinetContainer, UserCabinetWrapper, UserFormControl,} from "../../style/user/UserStyle";
 import {Colors} from "../../assets/Colors";
 import {Alert, Box, InputLabel, MenuItem, Select, SelectChangeEvent} from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -15,12 +8,12 @@ import * as React from "react";
 import {FormEvent, useEffect} from "react";
 import axios from "axios";
 import {InterestsValues} from "../../model/user/CommonUser";
+import {UpdateUser} from "../../model/security/Security";
 
 export const UserCabinet = () => {
     const [success, setSuccess] = React.useState<boolean>(false);
     const [error, setError] = React.useState<boolean>(false);
 
-    const [username, setUsername] = React.useState<string>(localStorage.getItem('username') || '');
     const [myGender, setMyGender] = React.useState<string>('');
     const [wantChatGender, setWantChatGender] = React.useState<string>('');
     const [interests, setInterests] = React.useState<string[]>([]);
@@ -46,6 +39,24 @@ export const UserCabinet = () => {
             })
     }, [])
 
+    React.useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError(false);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [error]);
+
+    React.useEffect(() => {
+        if (success) {
+            const timer = setTimeout(() => {
+                setSuccess(false);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [success]);
+
 
     const handleMyGenderChange = (event: SelectChangeEvent) => {
         setMyGender(event.target.value);
@@ -65,14 +76,11 @@ export const UserCabinet = () => {
         setSuccess(false);
         setError(false);
 
-        const updatedUserCabinetData = {
-            username: username,
-            myGender: myGender,
-            wantChatGender: wantChatGender,
+        const updatedUserCabinetData: UpdateUser = {
+            myGender: Number(myGender) - 1,
+            genderPreference: Number(wantChatGender) - 1,
             interests: interests
         };
-
-        console.log("Update: ", updatedUserCabinetData)
 
         const token = localStorage.getItem('token');
         axios.put('http://localhost:8085/api/v1/user', updatedUserCabinetData, {
@@ -97,28 +105,23 @@ export const UserCabinet = () => {
     return (
         <UserCabinetWrapper>
             <NavHeader/>
-            {error && (
-                <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="error" sx={{mt: 2}}>
-                    Update failed
-                </Alert>
-            )}
-            {success && (
-                <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="success" sx={{mt: 2}}>
-                    Update successfully
-                </Alert>
-            )}
+
             <UserCabinetContainer>
+                {error && (
+                    <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="error" sx={{mt: 2}}>
+                        Update failed
+                    </Alert>
+                )}
+                {success && (
+                    <Alert style={{position: 'absolute', top: 0, right: 0, margin: '1rem'}} severity="success" sx={{mt: 2}}>
+                        Updated successfully
+                    </Alert>
+                )}
+
                 <Greeting>{getGreeting()}</Greeting>
 
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}
                      style={{maxWidth: '720px', margin: '0 auto'}}>
-                    <UserTextField margin="normal" required fullWidth id="username"
-                                   value={username}
-                                   onChange={(event) => setUsername(event.target.value)}
-                                   label="Username" name="username" autoComplete="username" autoFocus
-                                   InputLabelProps={{style: {color: Colors.color7}}}
-                                   InputProps={{sx: {color: "white"}}}
-                    />
                     <UserFormControl sx={{width: '100%', marginTop: '30px'}} required>
                         <InputLabel id="demo-select-small" sx={{color: Colors.color7}}>Select gender</InputLabel>
                         <Select
@@ -160,7 +163,7 @@ export const UserCabinet = () => {
                         </Select>
                     </UserFormControl>
                     <UserAutocomplete
-                        style={{margin: '20px 0'}}
+                        style={{margin: '20px 0', borderColor: 'red'}}
                         multiple
                         id="tags-standard"
                         options={InterestsValues}

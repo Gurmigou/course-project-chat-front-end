@@ -7,7 +7,7 @@ export const ChatTimer = ({startTimer, handleTimeout}: ChatTimerProps) => {
     const [progress, setProgress] = useState(100);
     const [timeRemaining, setTimeRemaining] = useState("05:00");
     const [initialTimestamp, setInitialTimestamp] = useState<number | null>(null);
-    const duration = 50000; // 5 minutes in milliseconds
+    const duration = 300000; // 5 minutes in milliseconds
     const interval = 50; // update interval in milliseconds
 
     const timerProcess = (storedTimestampNumber: number, savedElapsedMillisecondsNumber: number): number => {
